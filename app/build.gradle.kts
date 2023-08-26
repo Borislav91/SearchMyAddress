@@ -97,4 +97,13 @@ dependencies {
 // Kotlin Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
+// DataStore
+    implementation("androidx.datastore:datastore:1.0.0")
+    // optional - RxJava2 support
+    implementation("androidx.datastore:datastore-rxjava2:1.0.0")
+
+    // optional - RxJava3 support
+    implementation("androidx.datastore:datastore-rxjava3:1.0.0")
+    implementation("androidx.datastore:datastore-core:1.0.0")
 }

@@ -27,8 +27,8 @@ fun SearchMyAddressScreen() {
 
 
     SearchMyAddressContent(
-//        state = state,
-//        action = viewModel::handleAction
+        state = state,
+        action = viewModel.submitAction
     )
 }
 
@@ -36,8 +36,8 @@ fun SearchMyAddressScreen() {
 
 @Composable
 fun SearchMyAddressContent(
-   /* state: SearchMyAddressState,
-    action: (SearchMyAddressAction) -> Unit*/
+    state: SearchMyAddressState,
+    action: (SearchMyAddressAction) -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         GoogleMap(
