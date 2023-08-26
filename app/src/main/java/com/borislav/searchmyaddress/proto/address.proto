@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+message Address {
+  string houseNumber = 1;
+  string streetName = 2;
+  string postalCode = 3;
+  string city = 4;
+}
+
+message AddressList {
+  repeated Address addresses = 1;
+}
