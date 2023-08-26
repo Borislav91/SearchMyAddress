@@ -1,6 +1,7 @@
 package com.borislav.searchmyaddress.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -8,7 +9,9 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,7 +46,7 @@ fun SearchMyAddressContent(
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = rememberCameraPositionState {
-                /*position = LatLng(48.8566, 2.3522) */ // Default to Paris, adjust as needed
+                // Default to Paris, adjust as needed
             }
         )
 
@@ -53,7 +56,7 @@ fun SearchMyAddressContent(
                 .padding(16.dp)
                 .align(Alignment.TopCenter)
         ) {
-            SearchBar()
+            SearchBar(action)
             // Here, you will eventually add the list of address suggestions
         }
     }
@@ -61,9 +64,10 @@ fun SearchMyAddressContent(
 
 @Composable
 fun SearchBar(
-    value: TextFieldValue = remember { TextFieldValue() },
-    onValueChange: (TextFieldValue) -> Unit = {}
+    action: (SearchMyAddressAction) -> Unit
 ) {
+    var value by remember { mutableStateOf(TextFieldValue()) } // manage state inside SearchBar
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -74,12 +78,14 @@ fun SearchBar(
         Icon(
             imageVector = Icons.Default.Search,
             contentDescription = null,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .size(24.dp)
+                .clickable { action(SearchMyAddressAction.Search(value.text)) } // send action to ViewModel
         )
         Spacer(modifier = Modifier.width(8.dp))
         BasicTextField(
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = { newValue -> value = newValue }, // update the state when text changes
             modifier = Modifier.weight(1f)
         )
     }

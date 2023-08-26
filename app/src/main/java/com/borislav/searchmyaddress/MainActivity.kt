@@ -12,10 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.borislav.searchmyaddress.ui.SearchMyAddressScreen
 import com.borislav.searchmyaddress.ui.theme.SearchMyAdressTheme
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Timber.plant(Timber.DebugTree())
+
         setContent {
             SearchMyAdressTheme {
                 // A surface container using the 'background' color from the theme

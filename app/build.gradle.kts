@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.kapt")
+    id("com.google.dagger.hilt.android")
+    kotlin("plugin.serialization") version "1.8.10"
 //    id("com.google.protobuf") version "0.8.17"
 }
 
@@ -78,6 +80,8 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.44.2")
     implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+
 
 // Jetpack Compose
     implementation("androidx.compose.ui:ui:1.5.0")
@@ -107,6 +111,12 @@ dependencies {
     // optional - RxJava3 support
     implementation("androidx.datastore:datastore-rxjava3:1.0.0")
     implementation("androidx.datastore:datastore-core:1.0.0")
+
+//  Timber
+    implementation ("com.jakewharton.timber:timber:5.0.1")
+}
+kapt {
+    correctErrorTypes = true
 }
 
 //protobuf {

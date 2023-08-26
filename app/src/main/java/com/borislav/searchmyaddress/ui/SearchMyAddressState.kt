@@ -1,6 +1,7 @@
 package com.borislav.searchmyaddress.ui
 
-import android.location.Address
+import com.borislav.searchmyaddress.domain.model.Address
+
 
 data class SearchMyAddressState(
     val query: String = "",

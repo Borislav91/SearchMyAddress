@@ -9,6 +9,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.features.ResponseException
 import io.ktor.client.request.get
 import io.ktor.http.URLProtocol
+import timber.log.Timber
 import javax.inject.Inject
 
 class SearchMyAddressApiImpl @Inject constructor(
@@ -16,6 +17,7 @@ class SearchMyAddressApiImpl @Inject constructor(
 ) : SearchMyAddressApi {
     override suspend fun fetchAddresses(query: String): Response<List<Address>> {
         return try {
+            Timber.tag("SearchMyAddressApiImpl").d("Fetching addresses for query: $query")
             val apiResponse: ApiResponse = httpClient.get {
                 url {
                     protocol = URLProtocol.HTTPS
@@ -25,6 +27,7 @@ class SearchMyAddressApiImpl @Inject constructor(
                     parameters.append("type", "housenumber")
                 }
             }
+            Timber.tag("SearchMyAddressApiImpl").d("Received API response: $apiResponse")  // Log the raw response
 
             // Directly work with properties and map them to the domain model
             val addresses = apiResponse.features
@@ -32,11 +35,16 @@ class SearchMyAddressApiImpl @Inject constructor(
                 .filter { it.type == "street" && it.housenumber != null }
                 .map { it.toDomain() }
 
+            Timber.tag("SearchMyAddressApiImpl").d("Mapped addresses: $addresses")  // Log the processed addresses
+
+
             Response.Success(addresses)
         } catch (e: ResponseException) {
+            Timber.tag("SearchMyAddressApiImpl").e(e, "HTTP error while fetching addresses")  // Log the error with exception
             // Handle specific HTTP errors if needed
             Response.Error(e.response.status.description, e.response.status.value)
         } catch (e: Exception) {
+            Timber.tag("SearchMyAddressApiImpl").e(e, "General error while fetching addresses")  // Log the error with exception
             Response.Error(e.localizedMessage, null)
         }
     }
