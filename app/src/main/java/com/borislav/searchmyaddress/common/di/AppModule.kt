@@ -28,8 +28,6 @@ object AppModule {
                 }
                 serializer = KotlinxSerializer(json)
             }
-
-            // You can add more Ktor features here if needed
         }
     }
 

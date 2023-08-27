@@ -27,7 +27,7 @@ constructor(
                 if (isValidQuery(trimmedQuery)) {
                     searchAddresses(trimmedQuery)
                 } else {
-                    // Notify the user about the invalid input or silently return
+                    // TODO Notify the user about the invalid input or silently return
                 }
             }
             is SearchMyAddressAction.SelectAddress -> {

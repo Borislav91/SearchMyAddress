@@ -31,7 +31,7 @@ class SearchMyAddressApiImpl @Inject constructor(
 
             Timber.tag("SearchMyAddressApiImpl").d("Received API response: $apiResponse")
 
-            // Directly take the top 5 results without any filtering
+            // Directly take the top 5 results
             val addresses = apiResponse.features.take(5).map { it.toDomain() }
 
             // Uncomment the below block if "housenumber" filtering is required

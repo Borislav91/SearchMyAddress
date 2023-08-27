@@ -6,5 +6,4 @@ import kotlinx.serialization.Serializable
 data class ApiResponse(
     val type: String,
     val features: List<FeatureResponse>,
-    // other fields you might need
 )
