@@ -3,6 +3,7 @@ package com.borislav.searchmyaddress.ui
 import androidx.lifecycle.viewModelScope
 import com.borislav.searchmyaddress.common.BaseViewModel
 import com.borislav.searchmyaddress.core.network.utils.Response
+import com.borislav.searchmyaddress.domain.model.Address
 import com.borislav.searchmyaddress.domain.usecase.SearchAddressUseCase
 //import com.borislav.searchmyaddress.domain.usecase.SearchAddressUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,7 +52,7 @@ constructor(
                     Timber.tag("SearchMyAddressViewModel").d("Successfully fetched ${response.data.size} addresses.")
                     updateState {
                         copy(
-                            searchResults = response.data,
+                            searchResults = /*fakeAddresses*/response.data,
                             isLoading = false
                         )
                     }
@@ -71,4 +72,11 @@ constructor(
     private fun isValidQuery(query: String): Boolean {
         return query.length in 3..200 && query[0].isLetterOrDigit()
     }
+
+//    val fakeAddresses = listOf(
+//        Address(houseNumber = "123", streetName = "Main St", postalCode = "12345", city = "Testville"),
+//        Address(houseNumber = "456", streetName = "Second Ave", postalCode = "67890", city = "Fakecity"),
+//        Address(houseNumber = "789", streetName = "Third Blvd", postalCode = "11223", city = "Mocktown")
+//    )
+
 }

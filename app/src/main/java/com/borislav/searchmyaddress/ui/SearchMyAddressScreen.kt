@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.borislav.searchmyaddress.domain.model.Address
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.rememberCameraPositionState
+import timber.log.Timber
 
 @Composable
 fun SearchMyAddressScreen() {
@@ -85,10 +86,12 @@ fun SearchBar(
         BasicTextField(
             value = value,
             onValueChange = { newValue ->
+                Timber.tag("SearchMyAddressScreen").d("SearchBar - Entered text: ${newValue.text}")
                 value = newValue
-                if (newValue.text.length >= 3) {
-                    action(SearchMyAddressAction.Search(newValue.text))
-                }
+//                if (newValue.text.length >= 3) {
+//                    action(SearchMyAddressAction.Search(newValue.text))
+//                }
+                action(SearchMyAddressAction.Search(newValue.text))
             },
             modifier = Modifier.weight(1f)
         )
@@ -112,12 +115,13 @@ fun AddressDropdown(results: List<Address>, action: (SearchMyAddressAction) -> U
             }
         }
     }
+    Timber.tag("SearchMyAddressScreen").d("AddressDropDown - List of Addresses: ${results.joinToString { it.streetName }}")
 }
 
 @Composable
 fun AddressItem(address: Address, action: (SearchMyAddressAction) -> Unit) {
     Text(
-        text = address.streetName,
+        text = address.streetName.ifEmpty { "No Street Name Available" },
         modifier = Modifier
             .fillMaxWidth()
             .clickable { action(SearchMyAddressAction.SelectAddress(address)) }
