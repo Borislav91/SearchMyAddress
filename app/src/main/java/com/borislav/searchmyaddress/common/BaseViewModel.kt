@@ -37,7 +37,7 @@ abstract class BaseViewModel<ScreenState : Any, Action, Event>(
     }
 
     open suspend fun handleActions(action: Action) {
-        // To or not to override, some screens mights not have actions
+        
     }
 
     private fun collectActions() = viewModelScope.launch {
