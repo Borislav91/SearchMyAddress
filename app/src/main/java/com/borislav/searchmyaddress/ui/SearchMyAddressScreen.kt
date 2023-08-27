@@ -35,7 +35,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import com.borislav.searchmyaddress.R
@@ -77,12 +76,6 @@ fun SearchMyAddressContent(
 
         val cameraState = rememberCameraPositionState()
         cameraState.position = cameraPosition
-
-        fun formatFrenchAddress(address: Address): String {
-            // Handling optional house number
-            val houseNumberPart = address.houseNumber?.let { "$it, " } ?: ""
-            return "$houseNumberPart${address.streetName}, ${address.postalCode} ${address.city}"
-        }
 
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
@@ -180,13 +173,14 @@ fun AddressDropdown(results: List<Address>, action: (SearchMyAddressAction) -> U
 @Composable
 fun AddressItem(address: Address, action: (SearchMyAddressAction) -> Unit) {
     Text(
-        text = address.streetName.ifEmpty { "No Street Name Available" },
+        text = formatFrenchAddress(address), // use the formatFrenchAddress here
         modifier = Modifier
             .fillMaxWidth()
             .clickable { action(SearchMyAddressAction.SelectAddress(address)) }
             .padding(12.dp)
     )
 }
+
 
 @Composable
 fun bitmapDescriptorFromVector(
@@ -207,6 +201,13 @@ fun bitmapDescriptorFromVector(
     drawable.draw(canvas)
     return BitmapDescriptorFactory.fromBitmap(bm)
 }
+
+fun formatFrenchAddress(address: Address): String {
+    // Handling optional house number
+    val houseNumberPart = address.houseNumber?.let { "$it, " } ?: ""
+    return "$houseNumberPart${address.streetName}, ${address.postalCode} ${address.city}"
+}
+
 
 @Preview(showBackground = true)
 @Composable
