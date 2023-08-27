@@ -32,6 +32,8 @@ The project makes use of Dagger Hilt for dependency
 injection, ensuring a modularized, maintainable, and testable codebase. The `AppModule` class in the DI package shows how dependencies such as `HttpClient` and `SearchMyAddressApi` are provided.
 
 ### **Screenshots**
+
+![MainScreen](https://github.com/Borislav91/SearchMyAddress/assets/14141206/bd7ffde2-6d1c-4232-bed8-d4076df6efd9)
 ![SearchMyAddress](https://github.com/Borislav91/SearchMyAddress/assets/14141206/215fc1b9-c0b3-4c10-a16e-0ef4d3690d81)
 ![Toulouse](https://github.com/Borislav91/SearchMyAddress/assets/14141206/5d13c131-de21-47c0-a07a-d31a350b5416)
 ![Lille](https://github.com/Borislav91/SearchMyAddress/assets/14141206/506a7b8e-3ea7-4a66-a33e-e86da45e9557)
