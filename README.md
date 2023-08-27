@@ -33,8 +33,12 @@ injection, ensuring a modularized, maintainable, and testable codebase. The `App
 
 ### **Screenshots**
 
-![MainScreen](https://github.com/Borislav91/SearchMyAddress/assets/14141206/bd7ffde2-6d1c-4232-bed8-d4076df6efd9)
-![DropDownList](https://github.com/Borislav91/SearchMyAddress/assets/14141206/0d9917e5-7b20-40d9-bd81-56bd3bbe2311)
-![SearchMyAddress](https://github.com/Borislav91/SearchMyAddress/assets/14141206/215fc1b9-c0b3-4c10-a16e-0ef4d3690d81)
-![Toulouse](https://github.com/Borislav91/SearchMyAddress/assets/14141206/5d13c131-de21-47c0-a07a-d31a350b5416)
-![Lille](https://github.com/Borislav91/SearchMyAddress/assets/14141206/506a7b8e-3ea7-4a66-a33e-e86da45e9557)
+### **Screenshots**
+
+<p float="left">
+  <img src="https://github.com/Borislav91/SearchMyAddress/assets/14141206/bd7ffde2-6d1c-4232-bed8-d4076df6efd9" width="100" />
+  <img src="https://github.com/Borislav91/SearchMyAddress/assets/14141206/0d9917e5-7b20-40d9-bd81-56bd3bbe2311" width="100" />
+  <img src="https://github.com/Borislav91/SearchMyAddress/assets/14141206/215fc1b9-c0b3-4c10-a16e-0ef4d3690d81" width="100" />
+  <img src="https://github.com/Borislav91/SearchMyAddress/assets/14141206/5d13c131-de21-47c0-a07a-d31a350b5416" width="100" />
+  <img src="https://github.com/Borislav91/SearchMyAddress/assets/14141206/506a7b8e-3ea7-4a66-a33e-e86da45e9557" width="100" />
+</p>
