@@ -10,3 +10,5 @@ data class SearchMyAddressState(
     val error: String? = null,
     val selectedAddress: Address? = null
 )
+
+

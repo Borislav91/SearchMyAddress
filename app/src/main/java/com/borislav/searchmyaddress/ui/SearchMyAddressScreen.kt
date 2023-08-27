@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.borislav.searchmyaddress.domain.model.Address
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.rememberCameraPositionState
 import timber.log.Timber
@@ -46,16 +48,23 @@ fun SearchMyAddressContent(
     action: (SearchMyAddressAction) -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
+        val defaultLatLng = LatLng(48.8566, 2.3522)  // Default coordinates for Paris
+        val targetLatLng = state.selectedAddress?.let {
+            LatLng(it.latitude, it.longitude)
+        } ?: defaultLatLng
+
+        val cameraPosition = if (state.selectedAddress != null) {
+            CameraPosition(targetLatLng, 15f, 0f, 0f)
+        } else {
+            CameraPosition(defaultLatLng, 10f, 0f, 0f)
+        }
+
+        val cameraState = rememberCameraPositionState()
+        cameraState.position = cameraPosition
+
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
-            cameraPositionState = rememberCameraPositionState {
-//                if (state.selectedAddress != null) {
-//                    target(state.selectedAddress.latitude, state.selectedAddress.longitude)
-//                    zoom(15f)  // Adjust zoom level as needed
-//                } else {
-//                    // Default to Paris, adjust as needed
-//                }
-            }
+            cameraPositionState = cameraState
         )
 
         Column(
@@ -69,6 +78,8 @@ fun SearchMyAddressContent(
         }
     }
 }
+
+
 
 @Composable
 fun SearchBar(

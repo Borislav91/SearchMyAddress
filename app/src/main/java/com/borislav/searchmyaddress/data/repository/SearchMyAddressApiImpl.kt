@@ -32,13 +32,16 @@ class SearchMyAddressApiImpl @Inject constructor(
             Timber.tag("SearchMyAddressApiImpl").d("Received API response: $apiResponse")
 
             // Directly take the top 5 results without any filtering
-            val addresses = apiResponse.features.take(5).map { it.properties.toDomain() }
+            val addresses = apiResponse.features.take(5).map { it.toDomain() }
 
             // Uncomment the below block if "housenumber" filtering is required
             /*
             val isHouseNumberQuery = query.matches(Regex("^\\d.*"))
             if (isHouseNumberQuery) {
-                addresses = apiResponse.features.filter { it.properties.type == "housenumber" }.take(5).map { it.properties.toDomain() }
+                addresses = apiResponse.features
+                            .filter { it.properties.type == "housenumber" }
+                            .take(5)
+                            .map { it.toDomain() }
             }
             */
 
@@ -53,3 +56,4 @@ class SearchMyAddressApiImpl @Inject constructor(
         }
     }
 }
+
