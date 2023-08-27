@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.borislav.searchmyaddress.ui.SearchMyAddressScreen
 import com.borislav.searchmyaddress.ui.theme.SearchMyAdressTheme
+import com.google.android.gms.maps.MapsInitializer
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -19,6 +20,9 @@ import timber.log.Timber
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Initialize Google Maps SDK
+        MapsInitializer.initialize(applicationContext)
 
         Timber.plant(Timber.DebugTree())
 

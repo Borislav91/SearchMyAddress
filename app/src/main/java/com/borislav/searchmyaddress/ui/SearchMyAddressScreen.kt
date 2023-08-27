@@ -1,5 +1,8 @@
 package com.borislav.searchmyaddress.ui
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,16 +22,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.borislav.searchmyaddress.domain.model.Address
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
+import com.borislav.searchmyaddress.R
+import com.google.maps.android.compose.MarkerInfoWindow
 import timber.log.Timber
 
 @Composable
@@ -53,6 +64,11 @@ fun SearchMyAddressContent(
             LatLng(it.latitude, it.longitude)
         } ?: defaultLatLng
 
+        val markerState = rememberMarkerState(position = targetLatLng)
+        val context = LocalContext.current
+        val icon = bitmapDescriptorFromVector(context = context, R.drawable.ic_pin_marker)
+
+
         val cameraPosition = if (state.selectedAddress != null) {
             CameraPosition(targetLatLng, 15f, 0f, 0f)
         } else {
@@ -62,10 +78,27 @@ fun SearchMyAddressContent(
         val cameraState = rememberCameraPositionState()
         cameraState.position = cameraPosition
 
+
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraState
-        )
+        ) {
+            state.selectedAddress?.let { address ->
+                val markerTitle = if (address.latitude == 48.8566 && address.longitude == 2.3522) {
+                    "Paris - default address"
+                } else {
+                    address.streetName.ifEmpty { "No Street Name Available" }
+                }
+                MarkerInfoWindow(
+                    state = rememberMarkerState(position = LatLng(address.latitude, address.longitude)),
+                    title = markerTitle,
+                    visible = true,
+                    icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+                )
+            }
+        }
+
+
 
         Column(
             modifier = Modifier
@@ -74,10 +107,14 @@ fun SearchMyAddressContent(
                 .align(Alignment.TopCenter)
         ) {
             SearchBar(action)
-            AddressDropdown(state.searchResults, action)
+            // Only show dropdown if no address is selected
+            if (state.isAddressSelected.not()) {
+                AddressDropdown(state.searchResults, action)
+            }
         }
     }
 }
+
 
 
 
@@ -102,11 +139,11 @@ fun SearchBar(
         BasicTextField(
             value = value,
             onValueChange = { newValue ->
+                if (newValue.text != value.text) {
+                    action(SearchMyAddressAction.ResetSelectedAddress)
+                }
                 Timber.tag("SearchMyAddressScreen").d("SearchBar - Entered text: ${newValue.text}")
                 value = newValue
-//                if (newValue.text.length >= 3) {
-//                    action(SearchMyAddressAction.Search(newValue.text))
-//                }
                 action(SearchMyAddressAction.Search(newValue.text))
             },
             modifier = Modifier.weight(1f)
@@ -143,6 +180,26 @@ fun AddressItem(address: Address, action: (SearchMyAddressAction) -> Unit) {
             .clickable { action(SearchMyAddressAction.SelectAddress(address)) }
             .padding(12.dp)
     )
+}
+
+@Composable
+fun bitmapDescriptorFromVector(
+    context: Context,
+    vectorResId: Int
+): BitmapDescriptor? {
+    // retrieve the actual drawable
+    val drawable = ContextCompat.getDrawable(context, vectorResId) ?: return null
+    drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+    val bm = Bitmap.createBitmap(
+        drawable.intrinsicWidth,
+        drawable.intrinsicHeight,
+        Bitmap.Config.ARGB_8888
+    )
+
+    // draw it onto the bitmap
+    val canvas = Canvas(bm)
+    drawable.draw(canvas)
+    return BitmapDescriptorFactory.fromBitmap(bm)
 }
 
 @Preview(showBackground = true)

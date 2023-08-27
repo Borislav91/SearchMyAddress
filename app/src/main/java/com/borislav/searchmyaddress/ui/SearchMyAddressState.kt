@@ -8,7 +8,8 @@ data class SearchMyAddressState(
     val searchResults: List<Address> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
-    val selectedAddress: Address? = null
+    val selectedAddress: Address? = null,
+    val isAddressSelected: Boolean = false
 )
 
 

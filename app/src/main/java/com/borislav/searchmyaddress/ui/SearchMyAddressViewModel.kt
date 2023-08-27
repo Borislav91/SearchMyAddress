@@ -35,7 +35,18 @@ constructor(
 
                 updateState {
                     copy(
-                        selectedAddress = action.address
+                        selectedAddress = action.address,
+                        isAddressSelected = true
+                    )
+                }
+            }
+            is SearchMyAddressAction.ResetSelectedAddress -> {
+                Timber.tag("SearchMyAddressViewModel").d("Resetting selected address")
+
+                updateState {
+                    copy(
+                        selectedAddress = null,
+                        isAddressSelected = false
                     )
                 }
             }
