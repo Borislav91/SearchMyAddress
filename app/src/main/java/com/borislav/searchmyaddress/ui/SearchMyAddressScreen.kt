@@ -78,6 +78,11 @@ fun SearchMyAddressContent(
         val cameraState = rememberCameraPositionState()
         cameraState.position = cameraPosition
 
+        fun formatFrenchAddress(address: Address): String {
+            // Handling optional house number
+            val houseNumberPart = address.houseNumber?.let { "$it, " } ?: ""
+            return "$houseNumberPart${address.streetName}, ${address.postalCode} ${address.city}"
+        }
 
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
@@ -91,10 +96,11 @@ fun SearchMyAddressContent(
                 }
                 MarkerInfoWindow(
                     state = rememberMarkerState(position = LatLng(address.latitude, address.longitude)),
-                    title = markerTitle,
+                    title = formatFrenchAddress(address),
                     visible = true,
                     icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
                 )
+
             }
         }
 
