@@ -18,15 +18,16 @@ constructor(
     private val searchAddressUseCase: SearchAddressUseCase
 ) : BaseViewModel<SearchMyAddressState, SearchMyAddressAction, Unit>(SearchMyAddressState()) {
 
-
-//    init {
-//        searchAddresses("1, route de la Paix, 75001 Paris")
-//    }
-
     override suspend fun handleActions(action: SearchMyAddressAction) {
         when (action) {
             is SearchMyAddressAction.Search -> {
-                searchAddresses(action.query)
+                val trimmedQuery = action.query.trim()
+
+                if (isValidQuery(trimmedQuery)) {
+                    searchAddresses(trimmedQuery)
+                } else {
+                    // Notify the user about the invalid input or silently return
+                }
             }
             is SearchMyAddressAction.SelectAddress -> {
                 // Handle the selection of an address if needed.
@@ -66,5 +67,8 @@ constructor(
                 }
             }
         }
+    }
+    private fun isValidQuery(query: String): Boolean {
+        return query.length in 3..200 && query[0].isLetterOrDigit()
     }
 }

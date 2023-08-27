@@ -18,26 +18,58 @@ class SearchMyAddressApiImpl @Inject constructor(
     override suspend fun fetchAddresses(query: String): Response<List<Address>> {
         return try {
             Timber.tag("SearchMyAddressApiImpl").d("Fetching addresses for query: $query")
+
+            // Determine if the query starts with a number.
+            val isHouseNumberQuery = query.matches(Regex("^\\d.*"))
+
             val apiResponse: ApiResponse = httpClient.get {
                 url {
                     protocol = URLProtocol.HTTPS
                     host = "api-adresse.data.gouv.fr"
                     path("search/")
                     parameters.append("q", query)
-                    parameters.append("type", "housenumber")
+
+                    if(isHouseNumberQuery) {
+                        parameters.append("type", "housenumber")
+                    }
                 }
             }
+            Timber.tag("SearchMyAddressApiImpl").d("Number of features: ${apiResponse.features.size}")
+
+
             Timber.tag("SearchMyAddressApiImpl").d("Received API response: $apiResponse")  // Log the raw response
 
             // Directly work with properties and map them to the domain model
             val addresses = apiResponse.features
-                .map { it.properties }
-                .filter { it.type == "housenumber" }
+                .filter {
+                    if (isHouseNumberQuery) {
+                        it.type == "housenumber"
+                    } else {
+                        it.type == "street"
+                    }
+                }
                 .take(5)
-                .map { it.toDomain() }
+                .map { it.properties.toDomain() }
 
-            Timber.tag("SearchMyAddressApiImpl").d("Mapped addresses: $addresses")  // Log the processed addresses
 
+
+//            val filteredResults = apiResponse.features.filter {
+//                if (isHouseNumberQuery) {
+//                    it.properties.type == "housenumber"
+//                } else {
+//                    it.properties.type == "street"
+//                }
+//            }
+//            Timber.tag("SearchMyAddressApiImpl").d("Number of filtered results: ${filteredResults.size}")
+//
+//            if(filteredResults.isNotEmpty()) {
+//                val mappedResults = filteredResults.take(5).map { it.properties.toDomain() }
+//                Timber.tag("SearchMyAddressApiImpl").d("Mapped addresses: $mappedResults")
+//                Response.Success(mappedResults)
+//            } else {
+//                Timber.tag("SearchMyAddressApiImpl").d("No results to map.")
+//                Response.Success(emptyList())
+//            }
 
             Response.Success(addresses)
         } catch (e: ResponseException) {
