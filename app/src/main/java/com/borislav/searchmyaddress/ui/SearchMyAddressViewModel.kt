@@ -19,15 +19,14 @@ constructor(
 ) : BaseViewModel<SearchMyAddressState, SearchMyAddressAction, Unit>(SearchMyAddressState()) {
 
 
-    init {
-        searchAddresses("1, route de la Paix, 75001 Paris")
-    }
+//    init {
+//        searchAddresses("1, route de la Paix, 75001 Paris")
+//    }
 
     override suspend fun handleActions(action: SearchMyAddressAction) {
         when (action) {
             is SearchMyAddressAction.Search -> {
-                updateState { copy(isLoading = true) }
-
+                searchAddresses(action.query)
             }
             is SearchMyAddressAction.SelectAddress -> {
                 // Handle the selection of an address if needed.
@@ -68,5 +67,4 @@ constructor(
             }
         }
     }
-
 }

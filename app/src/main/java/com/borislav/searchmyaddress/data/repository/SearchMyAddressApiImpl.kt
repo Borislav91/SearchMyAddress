@@ -32,7 +32,8 @@ class SearchMyAddressApiImpl @Inject constructor(
             // Directly work with properties and map them to the domain model
             val addresses = apiResponse.features
                 .map { it.properties }
-                .filter { it.type == "street" && it.housenumber != null }
+                .filter { it.type == "housenumber" }
+                .take(5)
                 .map { it.toDomain() }
 
             Timber.tag("SearchMyAddressApiImpl").d("Mapped addresses: $addresses")  // Log the processed addresses
