@@ -10,6 +10,10 @@ By Using Jetpack Compose Maps and api.addresse.data.gouv. API
 
 ## **Technical Highlights**
 
+### **Jetpack Compose & Material Design**
+The application's UI is designed using Jetpack Compose, the modern toolkit for building native Android UI. 
+Material Design is used to ensure a standardized native Android look and feel.
+
 ### **Clean Architecture**
 *SearchMyAddress* is built using the Clean Architecture principles:
 
@@ -25,7 +29,3 @@ For networking, the application leverages Ktor, a lightweight, yet powerful Kotl
 
 ### **Dagger Hilt**
 The project makes use of Dagger Hilt for dependency injection, ensuring a modularized, maintainable, and testable codebase. The `AppModule` class in the DI package shows how dependencies such as `HttpClient` and `SearchMyAddressApi` are provided.
-
-### **Jetpack Compose & Material Design**
-The application's UI is designed using Jetpack Compose, the modern toolkit for building native Android UI. This not only makes UI development more concise but also integrates well with Material Design principles, ensuring a beautiful and standardized look and feel.
-
