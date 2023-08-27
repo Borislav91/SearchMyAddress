@@ -31,8 +31,13 @@ constructor(
                 }
             }
             is SearchMyAddressAction.SelectAddress -> {
-                // Handle the selection of an address if needed.
-                // For example, you might navigate to a new screen or update the state with the selected address.
+                Timber.tag("SearchMyAddressViewModel").d("Address selected: ${action.address.streetName}")
+
+                updateState {
+                    copy(
+                        selectedAddress = action.address
+                    )
+                }
             }
             else -> {
                 // Handle other actions if needed.
@@ -52,7 +57,7 @@ constructor(
                     Timber.tag("SearchMyAddressViewModel").d("Successfully fetched ${response.data.size} addresses.")
                     updateState {
                         copy(
-                            searchResults = /*fakeAddresses*/response.data,
+                            searchResults = response.data,
                             isLoading = false
                         )
                     }
@@ -72,11 +77,4 @@ constructor(
     private fun isValidQuery(query: String): Boolean {
         return query.length in 3..200 && query[0].isLetterOrDigit()
     }
-
-//    val fakeAddresses = listOf(
-//        Address(houseNumber = "123", streetName = "Main St", postalCode = "12345", city = "Testville"),
-//        Address(houseNumber = "456", streetName = "Second Ave", postalCode = "67890", city = "Fakecity"),
-//        Address(houseNumber = "789", streetName = "Third Blvd", postalCode = "11223", city = "Mocktown")
-//    )
-
 }

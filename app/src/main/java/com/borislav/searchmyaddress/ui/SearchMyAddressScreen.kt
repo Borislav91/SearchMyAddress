@@ -49,7 +49,12 @@ fun SearchMyAddressContent(
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = rememberCameraPositionState {
-                // Default to Paris, adjust as needed
+//                if (state.selectedAddress != null) {
+//                    target(state.selectedAddress.latitude, state.selectedAddress.longitude)
+//                    zoom(15f)  // Adjust zoom level as needed
+//                } else {
+//                    // Default to Paris, adjust as needed
+//                }
             }
         )
 
